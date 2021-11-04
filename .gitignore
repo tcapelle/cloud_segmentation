@@ -1,0 +1,71 @@
+*.bak
+.gitattributes
+.last_checked
+.gitconfig
+*.bak
+*.log
+*~
+~*
+_tmp*
+tmp*
+tags
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# virtualenv
+.venv
+venv/
+ENV/
+
+.vscode
+*.swp
+
+# osx generated files
+.DS_Store
+.DS_Store?
+.Trashes
+ehthumbs.db
+Thumbs.db
+.idea
+
+# Wandb
+
+wandb/
+
+# Project Specifics
+WSISEG-Database/
