@@ -5,7 +5,7 @@ from fastcore.utils import run
 from PIL import Image
 from fastai.vision.utils import resize_images
 
-__all__ = ['is_gpu', 'show_gpus', 'get_wsiseg']
+__all__ = ['is_gpu', 'show_gpus', 'download_wsiseg', 'resize_dataset', 'get_wsiseg']
 
 def is_gpu(device=0):
     "check if gpu is available"
@@ -32,12 +32,17 @@ def show_gpus():
     else:
         print('No GPU found')
 
-def download_wsiseg(dest):
+def download_wsiseg(dest_path, force=False):
     "Download WSISEG dataset at dest"
-    dest = Path(dest)
-    if not dest.exists():
-        print(f'Cloning repo WSISEG into {dest}')
-        return run(f'git clone https://github.com/CV-Application/WSISEG-Database {dest}')
+    dest_path = Path(dest_path)
+    if dest_path.exists(): 
+        if force:
+            shutil.rmtree(dest_path)
+        else:
+            return
+    if not dest_path.exists():
+        print(f'Cloning repo WSISEG into {dest_path}')
+        code = run(f'git clone https://github.com/CV-Application/WSISEG-Database {dest_path}')
 
 
 def fix_dataset(path):
@@ -49,6 +54,10 @@ def fix_dataset(path):
         for im in folder.ls():
             if not im.name.endswith('.png'):
                 im.rename(im.with_suffix('.png'))
+    
+    print('delete .git folder')
+    shutil.rmtree(path/'.git')
+
 
 def resize_dataset(path, sizes = [128, 256]):
     "resize dataset to sizes"
@@ -64,13 +73,10 @@ def resize_dataset(path, sizes = [128, 256]):
 def get_wsiseg(path, force=False, sizes=None):
     "Download and prepare the dataset"
     path = Path(path)
-    if path.exists(): 
-        if force:
-            shutil.rmtree(path)
-        else:
-            return
-    download_wsiseg(path)
+
+    download_wsiseg(path, force)
     fix_dataset(path)
+
     if isinstance(sizes, (list, tuple)):
-        resize_dataset(path)
+        resize_dataset(path, sizes=sizes)
     
